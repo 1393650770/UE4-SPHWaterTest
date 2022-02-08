@@ -2,28 +2,52 @@
 
 
 #include "MyLearnObject.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
+#include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
+#include <FirstPerson/FirstPersonCharacter.h>
+
 // Sets default values
 AMyLearnObject::AMyLearnObject()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComp"));
+	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	RootComponent = MeshComp;
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	SphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	SphereComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	SphereComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	SphereComp->SetupAttachment(MeshComp);
+	
+
 }
 
 // Called when the game starts or when spawned
 void AMyLearnObject::BeginPlay()
 {
 	Super::BeginPlay();
+	//PlayEffects();
+
 }
 
-// Called every frame
-void AMyLearnObject::Tick(float DeltaTime)
+void AMyLearnObject::PlayEffects()
 {
-	Super::Tick(DeltaTime);
+	UGameplayStatics::SpawnEmitterAtLocation(this, PlayerEX, GetActorLocation());
 
+}
+
+
+
+void AMyLearnObject::NotifyActorBeginOverlap(AActor* OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
+	PlayEffects();
+	AFirstPersonCharacter* MyCharater = Cast<AFirstPersonCharacter>(OtherActor);
+	if (MyCharater)
+	{
+		MyCharater->bIsCarryByInObjective = true;
+		Destroy();
+	}
 }
 

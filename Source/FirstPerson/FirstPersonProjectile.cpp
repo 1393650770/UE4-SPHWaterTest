@@ -5,7 +5,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Components/SphereComponent.h"
 #include <Runtime/Engine/Classes/Kismet/GameplayStatics.h>
-
+#include "GameFramework/Actor.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 AFirstPersonProjectile::AFirstPersonProjectile() 
 {
 	// Use a sphere as a simple collision representation
@@ -39,8 +40,9 @@ void AFirstPersonProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherAc
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-		Destroy();
+		
 	}
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, GetActorLocation());
+	MakeNoise(1.0f, GetInstigator());
+	Destroy();
 }

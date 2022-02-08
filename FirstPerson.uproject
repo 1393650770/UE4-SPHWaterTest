@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{EFC99810-4821-7E97-54F0-67B2879E26A0}",
+	"EngineAssociation": "{83096BB0-47D9-9EFA-F24E-37AD3071FD46}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -11,6 +11,20 @@
 			"AdditionalDependencies": [
 				"Engine"
 			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "HoudiniEngine",
+			"Enabled": true
+		},
+		{
+			"Name": "NiagaraExtras",
+			"Enabled": true
+		},
+		{
+			"Name": "CascadeToNiagaraConverter",
+			"Enabled": true
 		}
 	]
 }

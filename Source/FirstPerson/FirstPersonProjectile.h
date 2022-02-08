@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UProjectileMovementComponent;
+class UPawnNoiseEmitterComponent;
 
 UCLASS(config=Game)
 class AFirstPersonProjectile : public AActor
@@ -24,6 +25,10 @@ class AFirstPersonProjectile : public AActor
 
 	UPROPERTY(EditDefaultsOnly,Category="FX")
 	UParticleSystem* ExplosionEffect;
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
 
 public:
 	AFirstPersonProjectile();

@@ -13,7 +13,7 @@ class UCameraComponent;
 class UMotionControllerComponent;
 class UAnimMontage;
 class USoundBase;
-
+class UPawnNoiseEmitterComponent;
 UCLASS(config=Game)
 class AFirstPersonCharacter : public ACharacter
 {
@@ -57,6 +57,9 @@ public:
 protected:
 	virtual void BeginPlay();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
+
 public:
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
@@ -86,6 +89,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
 	uint8 bUsingMotionControllers : 1;
 
+	UPROPERTY(BlueprintReadOnly, Category = "Gameplay")
+	bool bIsCarryByInObjective=false;
 protected:
 	
 	/** Fires a projectile. */
@@ -137,6 +142,7 @@ protected:
 	 * @returns true if touch controls were enabled.
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
+
 
 public:
 	/** Returns Mesh1P subobject **/
